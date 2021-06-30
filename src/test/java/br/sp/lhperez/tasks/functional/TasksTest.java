@@ -1,5 +1,7 @@
 package br.sp.lhperez.tasks.functional;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -7,14 +9,49 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TasksTest {
+	
+	/* Obs: para executar de forma paralela pelo seleniumGrid
+	 * colocar no arquivo pom do projeto:
+	 * <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.20</version>
+              <configuration>
+                  <parallel>all</parallel>
+                  <useUnlimitedThreads>true</useUnlimitedThreads>
+              </configuration>
+          </plugin>
+      </plugins>
+</build>
 
-	public WebDriver acessarAplicacao() {
+	e executar os teste pelo comando
+	mvn test
+	 */
+
+	public WebDriver acessarAplicacao() throws MalformedURLException {
 		System.setProperty("webdriver.chrome.driver", "C:\\CICD\\seleniumDrivers\\chromedriver.exe");
 
-		WebDriver driver = new ChromeDriver();
-		driver.navigate().to("http://localhost:8001/tasks/");
+		//Teste usando driver local
+		//WebDriver driver = new ChromeDriver();
+		
+		//Teste usando selenium hub / teste distribuído
+		DesiredCapabilities cap = DesiredCapabilities.chrome();
+		
+		//WebDriver driver = new RemoteWebDriver(new URL("http://192.168.31.200:4444/wd/hub"), cap); //caminho dado no console do selenium grid
+		
+		//rodar ipconfig para pegar o ip da maquina que esta rodando o grid
+		WebDriver driver = new RemoteWebDriver(new URL("http://172.30.160.1:4444/wd/hub"), cap); //caminho dado no console do selenium grid
+		
+		//driver.navigate().to("http://localhost:8001/tasks/");
+		
+		//rodar ipconfig para pegar o ip da maquina que esta rodando a app
+		driver.navigate().to("http://172.30.160.1:8001/tasks/");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		// driver.get("http://www.google.com.br/");
@@ -22,7 +59,7 @@ public class TasksTest {
 	}
 
 	@Test
-	public void salvarTarefaValidarMensagemSucesso() {
+	public void salvarTarefaValidarMensagemSucesso() throws MalformedURLException {
 		WebDriver driver = acessarAplicacao();
 
 		try {
@@ -51,7 +88,7 @@ public class TasksTest {
 	
 	
 	@Test
-	public void naoDeveSalvarTarefaSemDescricao() {
+	public void naoDeveSalvarTarefaSemDescricao() throws MalformedURLException {
 		WebDriver driver = acessarAplicacao();
 
 		try {
@@ -77,7 +114,7 @@ public class TasksTest {
 	
 	
 	@Test
-	public void naoDeveSalvarTarefaSemData() {
+	public void naoDeveSalvarTarefaSemData() throws MalformedURLException {
 		WebDriver driver = acessarAplicacao();
 
 		try {
@@ -104,7 +141,7 @@ public class TasksTest {
 	
 	
 	@Test
-	public void naoDeveSalvarTarefaComDataPassada() {
+	public void naoDeveSalvarTarefaComDataPassada() throws MalformedURLException {
 		WebDriver driver = acessarAplicacao();
 
 		try {
