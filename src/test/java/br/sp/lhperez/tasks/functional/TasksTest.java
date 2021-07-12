@@ -35,7 +35,7 @@ public class TasksTest {
 	 */
 
 	public WebDriver acessarAplicacao() throws MalformedURLException {
-		System.setProperty("webdriver.chrome.driver", "C:\\CICD\\seleniumDrivers\\chromedriver.exe");
+		//System.setProperty("webdriver.chrome.driver", "C:\\CICD\\seleniumDrivers\\chromedriver.exe");
 
 		//Teste usando driver local
 		//WebDriver driver = new ChromeDriver();
@@ -46,7 +46,9 @@ public class TasksTest {
 		//WebDriver driver = new RemoteWebDriver(new URL("http://192.168.31.200:4444/wd/hub"), cap); //caminho dado no console do selenium grid
 		
 		//rodar ipconfig para pegar o ip da maquina que esta rodando o grid
-		WebDriver driver = new RemoteWebDriver(new URL("http://172.30.160.1:4444/wd/hub"), cap); //caminho dado no console do selenium grid
+		//WebDriver driver = new RemoteWebDriver(new URL("http://172.30.160.1:4444/wd/hub"), cap); //caminho dado no console do selenium grid
+		WebDriver driver = new RemoteWebDriver(new URL("http://172.20.0.2:4444/wd/hub"), cap); //caminho dado no console do selenium grid
+		 
 		
 		//driver.navigate().to("http://localhost:8001/tasks/");
 		
